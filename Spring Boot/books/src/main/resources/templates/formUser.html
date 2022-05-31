@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="template">
+<link rel="stylesheet" type="text/css"
+	href="/webjars/bootstrap/4.3.1/css/bootstrap.min.css" />
+<head>
+<meta charset="utf-8">
+<title>Ajout des users</title>
+<script th:inline="javascript">  
+
+window.onload = function() {
+    document.getElementById('mylink').onclick = function() {
+    	var pw1 = document.f.password.value;  
+    	  var pw2 = document.f.password1.value;  
+    	  if(pw1 != pw2)  
+    	  {  
+    		  document.f.password.value = "";
+    		  document.f.password1.value="";
+    		  alert("Password incorrect");
+    		  return false;
+    	  }
+    	  else {
+    	        document.getElementById('myform').submit();
+    	        return false;
+    	  }
+
+    };
+};
+
+
+
+function matchPassword() {  
+  var pw1 = document.f.password.value;  
+  var pw2 = document.f.password1.value;  
+  alert(pw1+' '+pw2);
+  if(pw1 != pw2)  
+  {   
+    alert("Passwords did not match");  
+    return confirm('Etes-vous sûr ?');
+  } else {  
+    alert("Password created successfully");  
+  }  
+}  
+</script>
+</head>
+<body>
+	<div layout:fragment="Mycontent">
+		<div class="container mt-5">
+			<div class="card">
+				<div class="card-header" th:if="${mode=='new'}">Ajout des users</div>
+				<div class="card-header" th:if="${mode=='edit'}">Modification
+					des users</div>
+				<div class="card-body">
+					<form th:action="@{saveUser}" method="post" name="f" id="myform">
+					 <!-- th:action="${action} == 'showCreate2' ? @{showCreate2}  : @{saveUser}" -->
+						<div class="form-group">
+							<label class="control-label" hidden>ID User :</label> <input
+								type="hidden" name="user_id" class="form-control"
+								th:value="${user.user_id}" />
+						</div>
+						<div class="form-group">
+							<label class="control-label">Nom de user :</label> <input
+								type="text" name="username" class="form-control"
+								th:value="${user.username}" /> <span
+								th:errors=${user.username} class="text-danger">
+							</span>
+						</div>
+						<div class="form-group">
+							<label class="control-label">password de user :</label> 
+							<input type="password"  id="password" name="password" class="form-control" th:value="${user.password}" /> <span th:errors=${user.password} class="text-danger">
+							</span>
+						</div>
+
+						<div class="form-group">
+							<label class="control-label">confirmer password :</label> 
+							<input type="password" id="password1" name="password1" class="form-control" th:value="${user.password}" /> 
+							<span th:errors=${user.password} class="text-danger"> </span>
+						</div>
+						
+						
+						<div class="form-group">
+							<label class="control-label">role :</label> 
+							<select  type="text" name="s" class="form-control" >
+								<!-- <option th:each="e:${roles}" th:if="${mode=='edit'}"
+									th:value="${e.role_id}" th:text="${e.role}"></option>
+									th:selected="${ e.role_id==user.roles.role_id}"-->
+							<!-- 	<option th:each="e:${roles}" th:if="${mode=='edit'}"
+									th:value="${e.role_id}" th:text="${e.role}"></option>-->
+									
+									<option th:each="e:${roles}"    th:if="${mode=='edit'}"
+									th:value="${e.role_id}" th:text="${e.role}"></option>
+									
+								<option th:each="e:${roles}"    th:if="${mode=='new'}"
+									th:value="${e.role_id}" th:text="${e.role}"></option>
+							</select>
+						</div>
+
+						<!--<p  th:each="ro:${roles}" th:text="${ro.role_id}">
+						</p>-->
+						
+						
+						<!--<ul>
+  <li th:each="roro:${roles}">
+    <input type="checkbox" th:field="*{roles}" th:value="${roro.role_id}"  th:text="${roro.role}" name="sss" />
+
+  </li>
+</ul>  -->
+
+						 <a href="#" id="mylink" class="btn btn-primary"> submit </a>
+						<!-- <div>
+							<button type="submit" class="btn btn-primary" th:text="${action == 'Edit'} ? 'Edit' : 'Save'">Valider</button>
+						</div>-->
+					</form>
+					<!-- onclick="return confirm('Etes-vous sûr ?')" -->
+					<!-- <button type="button" th:onclick="matchPassword()">Show Alert</button>-->
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
